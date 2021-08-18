@@ -6,190 +6,291 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpaceX Launchs</title>
     <style>
-        body {
-            background-color: rgb(0, 0, 0);
+        body{
+            background-color: black;
+            font-family: cursive;
         }
-        .main .missions {
-            position: absolute;
-            width: 57%;
-            top: 0px;
-            border-radius: 10px;
-            height: 340%;
-            z-index: 4;
+        .missions_container {
             display: flex;
-            flex-direction: column;
-            margin: 0 45vh;
-            background-color: #4b4545;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        li{
-            background-color: rgb(54, 59, 42);
-            list-style: none;
-            margin: -2px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: line;
-            width: 100vh;
-            height: 3vh;
-            padding: 0rem 2rem;
-            border-top-left-radius: 10px;
-            border-top: solid 3px #4b4545;
-            z-index: 3;
-
-        }li:hover{
+        .mission_container {
             transition: 1s;
-            margin-top: -15px; 
-            height: 10vh;
-            z-index: 4;
-            cursor: pointer;
-            border-top: solid 1px #4b4545;
-            border-bottom: solid 1px #4b4545;
+            position: absolute;
+            list-style: none;
+            opacity: 0;
+            width: 350px;
+            height: 300px;
+            background-color: rgb(44, 49, 49);
+            border-radius: 100%;
+            box-shadow: rgb(0, 0, 0) 5px 5px;
+            padding: 10rem;
+            margin: 10px;
+            text-align: center;
+            right: 70%;
         }
-        li:last-of-type{
-            height: 20vh;
-        }
-        li p {
-            position: relative;
-            font-size: 13px;
-            font-weight: bold;
-            color: #f7cccc;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            bottom: 12px;
-            left: 10px;
-        }
-        li h1 {
-            position: relative;
-            display: flex;
-            top: 2px;
-            color: #94a086;
-            font-weight: bold;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            text-shadow: rgb(3, 3, 3) 1px 1px 1px;
-        }
-        .failMission{
-            background-color: rgba(238, 141, 141);
-            position: relative;
-            margin: 3px 0;
-            width: 15px;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            bottom: 5px;
-            color: #606060;
-            border-bottom: solid 5px black;
-        }
-        .successMission{
-            position: relative;
-            margin: 2px 0;
-            background-color: rgb(145, 214, 145);
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            bottom: 5px;
-            width: 15px;
-            color: #606060;
-            border-bottom: solid 5px black;
+        .mission_active {
+            transition: 1s;
+            position: absolute;
+            opacity: 1;
+            list-style: none;
+            background-color: #0000;
+            width: 700px;
+            height: 600px;
+            border-radius: 10px;
+            padding: 5px 0;
+            margin: 10px;
+            text-align: center;
+            right: 32%;
         }
 
+        .mN {
+            color: rgb(159, 253, 162);
+            font-size: 18px;
+        }
+        
+        .mission_name {
+            font-size: 15px;
+            font-weight: bold;
+            color: rgb(3, 253, 3);
+        }
+        p {
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #49fa03;
+            font-weight: bold;
+            text-align: initial;
+            margin: 0 3rem;
+        }
+        h2 {
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #49fa03;
+            font-weight: bold;
+            text-align: initial;
+            margin: 1rem 3rem;
+        }
+      
+
+        .btns_container {
+            
+            display: flex;
+            justify-content: center;
+            margin-top: 45%;
+        }
+        .btns_container button {
+            width: 100px;
+            height: 30px;
+            border: none;
+            font-family: cursive;
+            margin:0 1rem;
+            background-color: rgb(102, 192, 139);
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(3, 4, 3);
+        }
+
+        .fail {
+            color: red;
+            font-size: 20px;
+            font-family: fantasy;
+        }
+        .rF{
+            font-size: 15px;
+            color: rgb(247, 54, 54);
+        }
+        .success {
+            color: greenyellow;
+            font-size: 20px;
+            font-family: fantasy;
+        }
+
+        .img {
+            position: relative;
+            display: block;
+            width: 200px;
+            display: inline;
+            float: right;
+            margin: 1rem;
+        }
+
+        .more{
+            display: block;
+            font-size: 13px;
+            color: #21e214;
+        }
        
+        .moreDT {
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
     <header class="header">
 
     </header>
-    <main class="main">
-        <section class="flights">
-            <ul class="missions">
-            </ul>
-        </section>
-    </main>
+    <div class="container">
+        <ul class="missions_container">
+
+        </ul>
+    </div>
+
+    <div class="btns_container">
+        <button type="button" class="btn-back">Back</button><button type="button" class="btn-next">Next</button>
+    </div>
+
     <footer class="footer">
 
     </footer>
     <script>
-        const url = `https://api.spacexdata.com/v3/launches/`
 
-        const config = {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'content-type': 'appliction/json;charset=utf-8'
-            }
+          const url = 'https://api.spacexdata.com/v3/launches/';
+
+        async function getData() {
+        try {
+            const response = await fetch(url);
+            const jsonresponse = await response.json();
+            
+            return jsonresponse;
+
+        } catch(err) {
+             console.log(err)
+
+             return err;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+
+        let missions = [];
+
+        try {
+
+            missions = await getData();
+
+        } catch (error) {
+
+            console.log(error);
         }
 
-        fetch(url,config).then(
-            response => response.json()
-        ).then(
-            data => {
-                if(data.erro) {
-                    console.log('cannot found')
-                    return;
-                }
-                structure(data)
-                return
-            }
-        )
 
-        function structure(data) {
-            data.forEach(data => {
-                const missionName = data.mission_name;
-                const rocketName = data.rocket.rocket_name;
-                const launchYear = data.launch_year;
+        view(missions)
+})
 
-                let missionContainer = document.createElement('li');
-                let sep = document.createElement('div');
-                sep.classList.add('container');
+    
+    function view(missions) {
+   
+    if(missions !== undefined) {
+       
+        missions.forEach(mission => {
+                mN = mission.mission_name;
+                lY = mission.launch_year;
+                rN = mission.rocket.rocket_name;
+                lDUTC = mission.launch_date_utc;
+                lV = mission.links.video_link;
+                mIMG = mission.links.mission_patch_small;
+                mDetails = mission.details;
 
-                document.querySelector('.missions').appendChild(missionContainer)
-                missionContainer.appendChild(sep);
-                
-                let infoname = document.createElement('h1');
-                let inforocket = document.createElement('h1');
-                let infoyear = document.createElement('h1');
-                inforocket.textContent = 'ROCKET :';
-                infoname.textContent = 'MISSION :';
-                infoyear.textContent = 'LAUNCH YEAR : ';
-                
-                let mN = document.createElement('p');
-                let rN = document.createElement('p');
-                let lY = document.createElement('p');
-                
-                mN.textContent = missionName;
-                rN.textContent = rocketName;
-                lY.textContent = launchYear;
+            console.log(mission.details)
+                mInfo1 = mission.links.article_link;
+                mInfo2 = mission.links.wikipedia;
 
-                infoname.appendChild(mN);
-                inforocket.appendChild(rN);
-                infoyear.appendChild(lY);
-
-                missionContainer.appendChild(infoname);
-                missionContainer.appendChild(inforocket);
-                missionContainer.appendChild(infoyear)
-
-                if(!data.launch_success) {
-                    let infostatus = document.createElement('h2');
-                    infostatus.classList.add('failMission')
-                    infostatus.textContent = "''";
-
-                    let infostatusM = document.createElement('h1');
-                    infostatusM.textContent = "MISSON STATUS: FAIL"
-                    sep.appendChild(infostatusM)
-                    sep.appendChild(infostatus);
+                if(!mission.launch_success){
+                    if(mission.launch_failure_details !== undefined) {
+                    msR = mission.launch_failure_details.reason;
+                    mS = `<span class='fail'>Fail<span> <br><span class='rF'>reason: ${msR}</span>`;
                 } else {
-                    let infostatus = document.createElement('h2');
-                    infostatus.classList.add('successMission')
-                    infostatus.textContent = "''";
-
-                    let infostatusM = document.createElement('h1');
-                    infostatusM.textContent = "MISSON STATUS: SUCCESS"
-
-                    sep.appendChild(infostatusM)
-                    sep.appendChild(infostatus);
+                    msR = 'Unknow';
                 }
-                console.log(data.launch_success)
+                } else {
+                    mS =  `<span class='success'>Success<span>`
+                }
+               
+          
+                    let li = document.createElement('li');
+                    li.setAttribute('class', 'mission_container');
+                    let h1 = document.createElement('h1');
+                    h1.setAttribute('class', 'mission_name');
+                    h1.innerHTML = `MISSION: <span class='mN'>${mN}</span>`;
+                    li.appendChild(h1);
+
+                    let p = document.createElement('p');
+                    let h2 = document.createElement('h2');
+                    h2.innerHTML = `YEAR:  <span class='mN'>${ lY }<span> `
+
+                    p.innerHTML = ` NAME: <span class='mN'>${ rN }</span> <br><br>
+                                    LAUNCH DATE: <span class='mN'>${new Date(lDUTC)}</span> <br><br>
+                                    MISSION STATUS: ${mS}
+                                    <br>
+                                    <span class="moreDT">MORE DETAILS: ${mDetails}</span>
+                                    <br>
+                                    <br>
+                                    <img class="img" src="${mIMG}" alt="Mission IMAGE"></img>
+
+                                    <p>LAUNCH VIDEO: <a href="${lV}" class='mN'>${lV}</a></p>
+                                        <br> 
+                                    <p class="more">For more Information: 
+                                        <br>
+                                        <a href="${mInfo1}">${mInfo1}</a> 
+                                        <br> 
+                                        <a href="${mInfo1}">${mInfo2}</a></p>`
+                    li.appendChild(h2)
+                    li.appendChild(p);
+                    document.querySelector('.missions_container').appendChild(li);
+
                 
-            });
+        })
+
+
+    } else {
+   
+        console.log('obtendo dados....')
+
+    } 
+
+
+}
+
+window.onload = function() {
+        var item = document.querySelectorAll('.mission_container');
+        if(item[0] !== undefined) {
+        item[0].classList.add('mission_active')
     }
-  
+    }
+
+    let btns = document.querySelectorAll('button')
+
+    var i = 1;
+
+    btns.forEach(btn =>{
+        btn.addEventListener('click', evt => btnFunction(evt.target));
+    })
+
+    function btnFunction(btn) {
+
+        const item = document.querySelectorAll('.mission_container');
+
+        if (btn.className == 'btn-next') {
+
+            item[i].classList.add('mission_active')
+            if(i >= 1) {
+            item[i].previousElementSibling.classList.remove('mission_active')
+        }
+            i++
+        if (i == item.length) {
+            item.forEach(item=> item.classList.remove('mission_active'))
+            i = 1;
+        }
+        }
+
+        if(btn.className == 'btn-back' && i > 1) {
+
+            i--
+            item[i].classList.remove('mission_active');
+            item[i].previousElementSibling.classList.add('mission_active');
+        }
+    }
     </script>
 </body>
 </html>
